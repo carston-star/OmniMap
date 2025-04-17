@@ -424,5 +424,9 @@ footer {
 }
 
 .weather-icon.saas {
-  background-image: url('Images/HQ.png'); /* Reuse HQ icon for SaaS */
+  background-image: url('Images/saas.png'); /* Reuse HQ icon for SaaS */
+}
+
+.weather-icon.sales {
+  background-image: url('Images/sales.png'); /* icon for sales */
 }

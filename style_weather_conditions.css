@@ -29,7 +29,7 @@
 }
 
 .weather-icon.saas {
-  background-image: url('Images/HQ.png'); /* Reuse HQ icon for SaaS */
+  background-image: url('Images/saas.png'); /* Reuse HQ icon for SaaS */
 }
 
 /* Styles for the map container */
