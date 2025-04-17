@@ -83,7 +83,7 @@ footer {
 /* Styles for the legend */
 .legend {
   position: absolute;
-  bottom: 50px; /* Move the legend up */
+  bottom: 80px; /* Move the legend up */
   left: 10px;
   background-color: white;
   padding: 10px;
@@ -113,7 +113,7 @@ footer {
 /* Styles for the Locate button */
 .locate {
   position: absolute;
-  top: 160px; /* Position under the zoom buttons */
+  top: 180px; /* Position under the zoom buttons */
   left: 10px;
   background-color: white;
   border: 2px solid #8B0000; /* Deep red border */
@@ -132,7 +132,7 @@ footer {
 /* Styles for the Reset Map button */
 .reset-map {
   position: absolute;
-  top: 205px; /* Position under the Locate Me button */
+  top: 225px; /* Position under the Locate Me button */
   left: 10px;
   background-color: white;
   border: 2px solid #8B0000; /* Deep red border */
