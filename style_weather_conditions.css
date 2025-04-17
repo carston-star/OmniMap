@@ -115,6 +115,11 @@ header nav ul li a {
   height: 15px;
 }
 
+/* Specific size for Sales icon (50% of HQ) */
+.custom-icon .marker-type-sales .site-icon {
+  width: 15px;
+  height: 15px;
+}
 /* Remove old style */
 /*
 .custom-icon div {

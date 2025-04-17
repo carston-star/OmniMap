@@ -56,7 +56,13 @@
         popupAnchor: [0, -30]
       }),
       saas: L.icon({
-        iconUrl: 'Images/HQ.png',
+        iconUrl: 'Images/saas.png',
+        iconSize: [15, 15], // 50% of hq icon size
+        iconAnchor: [7.5, 15], // Adjusted anchor
+        popupAnchor: [0, -15] // Adjusted popup anchor
+      }),
+      sales: L.icon({
+        iconUrl: 'Images/sales.png',
         iconSize: [15, 15], // 50% of hq icon size
         iconAnchor: [7.5, 15], // Adjusted anchor
         popupAnchor: [0, -15] // Adjusted popup anchor
@@ -83,12 +89,12 @@
       { name: 'Keken', coords: [20.9861173, -89.7936814], type: 'pork' },
       { name: 'Proan', coords: [20.6740117, -103.4179727], type: 'pork' },
       { name: 'SuKarne', coords: [25.3220694, -104.908717], type: 'beef' },
-      { name: 'CIM', coords: [39.0929534, -95.6437779], type: 'saas'}, // Shawn ks
-      { name: 'FS', coords: [38.62763214111328, -90.19908905029297], type: 'saas'}, // Matt mo, shift+alt+downarrow
-      { name: 'Sales', coords: [39.7392364, -104.984862], type: 'saas'}, // Rich aurora, co
-      { name: 'Sales', coords: [38.883567810058594, -94.81935119628906], type: 'saas'}, // Monty olathe, ks
-      { name: 'Sales', coords: [33.018917083740234, -80.17584228515625], type: 'saas'}, // Candice sommerville, sc
-      { name: 'Sales', coords: [41.8755616, -87.6244212], type: 'saas'} // Dan chicago, il
+      { name: 'CIM', coords: [39.0929534, -95.6437779], type: 'sales'}, // Shawn ks
+      { name: 'FS', coords: [38.62763214111328, -90.19908905029297], type: 'sales'}, // Matt mo, shift+alt+downarrow
+      { name: 'Sales', coords: [39.7392364, -104.984862], type: 'sales'}, // Rich aurora, co
+      { name: 'Sales', coords: [38.883567810058594, -94.81935119628906], type: 'sales'}, // Monty olathe, ks
+      { name: 'Sales', coords: [33.018917083740234, -80.17584228515625], type: 'sales'}, // Candice sommerville, sc
+      { name: 'Sales', coords: [41.8755616, -87.6244212], type: 'sales'} // Dan chicago, il
       ];
 
     const OPENWEATHER_API_KEY = "124eb090e88356c238f27b5aa0855d13"; // Replace with your OpenWeather API key
