@@ -1,0 +1,131 @@
+/* CSS for Weather tab */
+/* Styles for weather map icons */
+.weather-icon {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: 1px solid #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-size: cover;
+  background-position: center;
+}
+
+.weather-icon.beef {
+  background-image: url('Images/cow.png');
+}
+
+.weather-icon.pork {
+  background-image: url('Images/pig.png');
+}
+
+.weather-icon.poultry {
+  background-image: url('Images/turkey.png');
+}
+
+.weather-icon.hq {
+  background-image: url('Images/HQ.png');
+}
+
+.weather-icon.saas {
+  background-image: url('Images/HQ.png'); /* Reuse HQ icon for SaaS */
+}
+
+/* Styles for the map container */
+#map {
+  height: calc(100vh - 100px); /* Adjust height to account for header */
+  margin: 0;
+}
+
+/* Header styles for the weather page */
+header {
+  text-align: center;
+  padding: 20px;
+  background-color: #8B0000; /* Deep red background */
+  color: white; /* White text color */
+  border-bottom: 2px solid #000; /* Black border */
+  font-family: 'Arial', sans-serif; /* Professional font */
+}
+
+header h1 {
+  margin: 0;
+  font-size: 2em;
+}
+
+header nav ul {
+  list-style: none;
+  display: flex;
+  justify-content: center;
+  padding: 0;
+  margin: 0;
+}
+
+header nav ul li {
+  margin: 0 15px;
+}
+
+header nav ul li a {
+  text-decoration: none;
+  color: white;
+}
+
+/* New styles for marker layout */
+.custom-icon .marker-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 80px; /* Match iconSize width */
+}
+
+.custom-icon .site-name,
+.custom-icon .temperature-info {
+  background-color: rgba(240, 240, 229, 0.8); /* Soft cream background */
+  padding: 2px 5px;
+  border-radius: 3px;
+  font-size: 12px;
+  line-height: 1.2;
+  text-align: center;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+  white-space: nowrap; /* Prevent text wrapping */
+  width: 100%; /* Take full width of container */
+  margin: 2px 0; /* Add vertical spacing */
+}
+
+.custom-icon .site-name {
+  font-weight: bold;
+}
+
+/* Default icon size (used for beef, pork, poultry) */
+.custom-icon .site-icon {
+  width: 30px;
+  height: 35px;
+  margin: 2px 0;
+}
+
+/* Specific size for HQ icon */
+.custom-icon .marker-type-hq .site-icon {
+  width: 30px;
+  height: 30px;
+}
+
+/* Specific size for SaaS icon (50% of HQ) */
+.custom-icon .marker-type-saas .site-icon {
+  width: 15px;
+  height: 15px;
+}
+
+/* Remove old style */
+/*
+.custom-icon div {
+  background-color: rgba(255, 255, 240, 0.8);
+  padding: 2px 5px;
+  border-radius: 3px;
+  font-size: 12px;
+  line-height: 1.2;
+  text-align: center;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+  white-space: nowrap;
+  display: inline-block;
+}
+*/

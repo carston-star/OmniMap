@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<!-- Omnisharp Site Locations and Nearest Airports Web Mapping -->
+<html lang="en">
+<head>
+  <title>Plant Sites Map</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.0/xlsx.full.min.js"></script>
+  <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+</head>
+<body>
+  <header>
+    <h1>Omnisharp KSM Plant Locations</h1>
+    <nav>
+      <ul style="list-style: none; display: flex; justify-content: center; padding: 0; margin: 0;">
+        <li style="margin: 0 15px;"><a href="index2.html" style="text-decoration: none; color: white;">Home</a></li>
+        <li style="margin: 0 15px;"><a href="weather_conditions.html" style="text-decoration: none; color: white;">Weather</a></li>
+      </ul>
+    </nav>
+  </header>
+  <div class="left-button-container">
+    <button id="locate" class="locate" title="Locate">Locate</button>
+    <button id="reset-map" class="reset-map" title="Reset Map">Reset</button>
+  </div>
+  <div class="toggle-container">
+    <button class="toggle-plant-info-button active" data-default-text="Show Plant Information" data-active-text="Hide Plant Information">Hide Plant Information</button>
+    <button class="toggle-straight-line-button" data-default-text="Show Straight Line Distances" data-active-text="Hide Straight Line Distances">Show Straight Line Distances</button>
+    <button class="toggle-driving-distance-button" data-default-text="Show Driving Distance" data-active-text="Hide Driving Distance">Show Driving Distance</button>
+    <button class="toggle-machine-status-button" data-default-text="Show Machine Status" data-active-text="Hide Machine Status">Show Machine Status</button>
+    <div class="sub-toggle-container">
+      <button class="toggle-usa-mexico-button" data-default-text="Show USA to Mexico Distances" data-active-text="Hide USA to Mexico Distances">Show USA to Mexico Distances</button>
+      <button class="toggle-hq-saas-button" data-default-text="Show HQ and SaaS Centers" data-active-text="Hide HQ and SaaS Centers">Show HQ and SaaS Centers</button>
+    </div>
+  </div>
+  <div id="map" style="height: 600px;"></div> <!-- Ensure the map container has the correct ID and style -->
+  <div id="machine-status-legend" class="machine-status-legend">
+    <h3>Machine Status</h3>
+    <div><div class="machine-status green"></div> Operational</div>
+    <div><div class="machine-status light-green"></div> Minor Issues</div>
+    <div><div class="machine-status yellow"></div> Maintenance Required</div>
+    <div><div class="machine-status orange"></div> Major Issues</div>
+    <div><div class="machine-status red"></div> Out of Service</div>
+  </div>
+  <div id="legend" class="legend">
+    <h3>Legend</h3>
+    <div><img src="Images/cow.png" alt="Beef Plant" /> Beef Plant: <span id="beef-count"></span></div>
+    <div><img src="Images/pig.png" alt="Pork Plant" /> Pork Plant: <span id="pork-count"></span></div>
+    <div><img src="Images/turkey.png" alt="Poultry Plant" /> Poultry Plant: <span id="poultry-count"></span></div>
+  </div>
+  <button id="open-directions" class="open-directions">Open Directions</button> <!-- Ensure the button is visible -->
+  <button id="share-directions" class="share-directions" style="display: none;">Share Directions</button> <!-- New button for sharing directions -->
+  <button id="show-flights" class="show-flights">Show Flights</button> <!-- New button for showing flights -->
+  <footer>
+    <p>&copy; 2025 Omnisharp, LLC</p>
+  </footer>
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  <script src="script2.js"></script>
+</body>
+</html>

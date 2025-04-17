@@ -1,0 +1,428 @@
+body {
+  margin: 0;
+  padding: 0;
+  overflow: hidden; /* Prevent scroll bars on desktop */
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+/* Global font settings */
+body, button, .legend, .toggle-button, .toggle-road-button, .toggle-hq-button {
+  font-family: 'Arial', sans-serif; /* Professional font */
+}
+
+#map {
+  flex: 1;
+  height: calc(100vh - 100px); /* Adjust height to account for header and footer */
+  margin-bottom: 0; /* Remove margin to ensure full height */
+}
+
+.distance-label {
+  background-color: white;
+  padding: 2px 12px;
+  border-radius: 3px;
+  border: 1px solid black;
+  font-size: 12px;
+  white-space: nowrap;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000; /* Ensure the labels are on top */
+}
+
+.leaflet-control .toggle-button button,
+.leaflet-control .toggle-road-button button,
+.leaflet-control .toggle-hq-button button {
+  background-color: white;
+  border: 1px solid #ccc;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+.leaflet-control .toggle-button button:hover,
+.leaflet-control .toggle-road-button button:hover,
+.leaflet-control .toggle-hq-button button:hover {
+  background-color: #f0f0f0;
+}
+
+.leaflet-control .toggle-button button.active,
+.leaflet-control .toggle-road-button button.active,
+.leaflet-control .toggle-hq-button button.active {
+  background-color: #32CD32; /* Pleasant green color */
+}
+
+/* New styles for header and footer */
+header {
+  text-align: center;
+  padding: 20px;
+  background-color: #8B0000; /* Deep red background */
+  color: white; /* White text color */
+  border-bottom: 2px solid #000; /* Black border */
+  font-family: 'Arial', sans-serif; /* Professional font */
+  position: relative;
+}
+
+header h1 {
+  margin: 0;
+  font-size: 2em;
+}
+
+footer {
+  text-align: center;
+  padding: 10px; /* Adjusted padding */
+  background-color: #f8f8f8;
+  border-top: 1px solid #ccc;
+  width: 100%;
+  color: #000; /* Black text color */
+  position: relative;
+  bottom: 0;
+}
+
+/* Styles for the legend */
+.legend {
+  position: absolute;
+  bottom: 50px; /* Move the legend up */
+  left: 10px;
+  background-color: white;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  z-index: 1000; /* Ensure the legend is on top of all other layers */
+}
+
+.legend h3 {
+  margin: 0 0 10px 0;
+  font-size: 16px;
+}
+
+.legend div {
+  display: flex;
+  align-items: center;
+  margin-bottom: 5px;
+}
+
+.legend img {
+  width: 20px;
+  height: 20px;
+  margin-right: 5px;
+}
+
+/* Styles for the Locate button */
+.locate {
+  position: absolute;
+  top: 160px; /* Position under the zoom buttons */
+  left: 10px;
+  background-color: white;
+  border: 2px solid #8B0000; /* Deep red border */
+  border-radius: 5px;
+  width: 60px;
+  height: 40px;
+  font-size: 13px; /* Adjust font size */
+  cursor: pointer;
+  z-index: 1000; /* Ensure the button is on top of all other layers */
+}
+
+.locate:hover {
+  background-color: #f0f0f0;
+}
+
+/* Styles for the Reset Map button */
+.reset-map {
+  position: absolute;
+  top: 205px; /* Position under the Locate Me button */
+  left: 10px;
+  background-color: white;
+  border: 2px solid #8B0000; /* Deep red border */
+  border-radius: 5px;
+  width: 60px;
+  height: 40px;
+  cursor: pointer;
+  z-index: 1000; /* Ensure the button is on top of all other layers */
+}
+
+.leaflet-marker-icon,
+.leaflet-marker-shadow,
+.leaflet-overlay-pane path {
+  z-index: 1000; /* Ensure markers and lines are on top */
+}
+
+/* Styles for the new toggle buttons */
+.toggle-container {
+  position: absolute;
+  top: 95px; /* Adjusted to be below the header */
+  right: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  z-index: 1000; /* Ensure the buttons are above the map */
+}
+
+.toggle-container button {
+  width: 200px; /* Set the width to 200px */
+  background-color: white;
+  border: 1px solid #ccc;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+.toggle-container button:hover {
+  background-color: #f0f0f0;
+}
+
+.toggle-container button.active {
+  background-color: #32CD32; /* Green color for active button */
+}
+
+/* Styles for the sub-toggle button */
+.sub-toggle-container {
+  display: none; /* Initially hidden */
+  flex-direction: column;
+  gap: 5px;
+  margin-top: 5px;
+}
+
+.sub-toggle-container button {
+  width: 180px; /* Slightly smaller width */
+  background-color: white;
+  border: 1px solid #ccc;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+.sub-toggle-container button:hover {
+  background-color: #f0f0f0;
+}
+
+.sub-toggle-container button.active {
+  background-color: #32CD32; /* Green color for active button */
+}
+
+/* Styles for the machine status radio buttons */
+.machine-status-container {
+  display: flex;
+  justify-content: center;
+  position: absolute;
+  transform: translate(-70%, 10px); /* Move the container slightly to the left */
+  z-index: 1000; /* Ensure the buttons are on top of the map */
+  pointer-events: none; /* Allow map interactions through the container */
+}
+
+.machine-status {
+  width: 10px; /* Smaller size */
+  height: 10px; /* Smaller size */
+  border-radius: 50%;
+  border: 1px solid #000;
+  margin: 0 3px; /* Adjust margin */
+  cursor: pointer;
+  pointer-events: auto; /* Enable clicking on the buttons */
+}
+
+.machine-status.green { background-color: green; }
+.machine-status.light-green { background-color: lightgreen; }
+.machine-status.yellow { background-color: yellow; }
+.machine-status.orange { background-color: orange; }
+.machine-status.red { background-color: red; }
+
+/* Styles for the machine status legend */
+.machine-status-legend {
+  position: absolute;
+  bottom: 180px; /* Move up a little bit */
+  left: 10px;
+  background-color: white;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  z-index: 1000; /* Ensure the legend is on top of all other layers */
+  display: none; /* Initially hidden */
+}
+
+.machine-status-legend h3 {
+  margin: 0 0 10px 0;
+  font-size: 16px;
+}
+
+.machine-status-legend div {
+  display: flex;
+  align-items: center;
+  margin-bottom: 5px;
+}
+
+.machine-status-legend .machine-status {
+  margin-right: 5px;
+}
+
+/* Styles for the new Open Directions button */
+.open-directions {
+  position: absolute;
+  bottom: 190px;
+  right: 10px;
+  background-color: #8B0000; /* Deep red background */
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px;
+  cursor: pointer;
+  z-index: 1000; /* Ensure the button is on top of all other layers */
+}
+
+.open-directions:hover {
+  background-color: #a00000; /* Slightly lighter red on hover */
+}
+
+/* Styles for the new Share Directions button */
+.share-directions {
+  position: absolute;
+  bottom: 100px;
+  right: 10px;
+  background-color: #8B0000; /* Deep red background */
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px;
+  cursor: pointer;
+  z-index: 1000; /* Ensure the button is on top of all other layers */
+}
+
+.share-directions:hover {
+  background-color: #a00000; /* Slightly lighter red on hover */
+}
+
+/* Styles for the new Show Flights button */
+.show-flights {
+  position: absolute;
+  bottom: 150px;
+  right: 10px;
+  background-color: #8B0000; /* Deep red background */
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px;
+  cursor: pointer;
+  z-index: 1000; /* Ensure the button is on top of all other layers */
+}
+
+.show-flights:hover {
+  background-color: #a00000; /* Slightly lighter red on hover */
+}
+
+/* Styles for the new Share Directions button */
+.share-directions {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  background-color: #8B0000; /* Deep red background */
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px;
+  cursor: pointer;
+  z-index: 1000; /* Ensure the button is on top of all other layers */
+}
+
+.share-directions:hover {
+  background-color: #a00000; /* Slightly lighter red on hover */
+}
+
+/* Styles for the new Weather toggle button */
+.toggle-weather-button {
+  width: 200px;
+  background-color: white;
+  border: 1px solid #ccc;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+.toggle-weather-button:hover {
+  background-color: #f0f0f0;
+}
+
+.toggle-weather-button.active {
+  background-color: #32CD32; /* Green color for active button */
+}
+
+.temperature-label {
+  background-color: white;
+  padding: 2px 12px;
+  border-radius: 3px;
+  border: 1px solid black;
+  font-size: 12px;
+  white-space: nowrap;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000; /* Ensure the labels are on top */
+}
+
+.temperature-label.cold {
+  background-color: #add8e6; /* Light blue */
+}
+
+.temperature-label.cool {
+  background-color: #87ceeb; /* Sky blue */
+}
+
+.temperature-label.warm {
+  background-color: #ffffe0; /* Light yellow */
+}
+
+.temperature-label.hot {
+  background-color: #ffd700; /* Gold */
+}
+
+.temperature-label.very-hot {
+  background-color: #ff8c00; /* Dark orange */
+}
+
+/* Styles for the file input label */
+.load-file-button {
+  display: inline-block;
+  background-color: #8B0000; /* Deep red background */
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px;
+  cursor: pointer;
+  z-index: 1000; /* Ensure the button is on top of all other layers */
+}
+
+.load-file-button:hover {
+  background-color: #a00000; /* Slightly lighter red on hover */
+}
+
+/* Styles for weather map icons */
+.weather-icon {
+  width: 30px;
+  height: 35px;
+  border-radius: 50%;
+  border: 1px solid #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-size: cover;
+  background-position: center;
+}
+
+.weather-icon.beef {
+  background-image: url('Images/cow.png');
+}
+
+.weather-icon.pork {
+  background-image: url('Images/pig.png');
+}
+
+.weather-icon.poultry {
+  background-image: url('Images/turkey.png');
+}
+
+.weather-icon.hq {
+  background-image: url('Images/HQ.png');
+}
+
+.weather-icon.saas {
+  background-image: url('Images/HQ.png'); /* Reuse HQ icon for SaaS */
+}
