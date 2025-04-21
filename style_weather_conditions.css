@@ -70,57 +70,95 @@ header nav ul li a {
   color: white;
 }
 
-/* New styles for marker layout */
+/* Styles for marker layout */
 .custom-icon .marker-container {
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 80px; /* Match iconSize width */
+  width: 80px; /* Match iconSize width from HTML */
 }
 
-.custom-icon .site-name,
-.custom-icon .temperature-info {
-  background-color: rgba(240, 240, 229, 0.8); /* Soft cream background */
+.custom-icon .site-name { /* Removed .temperature-info */
+  background-color: rgba(240, 240, 229, 0.9); /* Slightly less transparent background */
   padding: 2px 5px;
   border-radius: 3px;
   font-size: 12px;
   line-height: 1.2;
   text-align: center;
-  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.3); /* Slightly stronger shadow */
   white-space: nowrap; /* Prevent text wrapping */
   width: 100%; /* Take full width of container */
-  margin: 2px 0; /* Add vertical spacing */
-}
-
-.custom-icon .site-name {
+  margin-bottom: 2px; /* Space between name and icon */
   font-weight: bold;
 }
 
-/* Default icon size (used for beef, pork, poultry) */
-.custom-icon .site-icon {
-  width: 30px;
-  height: 35px;
-  margin: 2px 0;
+/* Style for the temperature info */
+.custom-icon .temperature-info {
+  background-color: rgba(240, 240, 229, 0.9); /* Match site-name background */
+  padding: 2px 5px;
+  border-radius: 3px;
+  font-size: 11px; /* Slightly smaller font */
+  line-height: 1.2;
+  text-align: center;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+  white-space: nowrap;
+  width: 100%;
+  margin-top: 2px; /* Space between icon and temp info */
 }
 
-/* Specific size for HQ icon */
+
+/* Re-introduce specific image size constraints based on type */
+.custom-icon .site-icon {
+  margin: 2px 0; /* Keep vertical spacing */
+  /* Default size (beef, pork, poultry) */
+  width: 30px;
+  height: 35px;
+}
+
+/* Specific size overrides */
 .custom-icon .marker-type-hq .site-icon {
   width: 30px;
   height: 30px;
 }
-
-/* Specific size for SaaS icon (50% of HQ) */
 .custom-icon .marker-type-saas .site-icon {
   width: 15px;
   height: 15px;
 }
-
-/* Specific size for Sales icon (50% of HQ) */
 .custom-icon .marker-type-sales .site-icon {
   width: 15px;
   height: 15px;
 }
-/* Remove old style */
+
+/* Remove specific size overrides as they are handled in HTML */ /* This comment is now incorrect, removing */
+/*
+.custom-icon .marker-type-hq .site-icon { ... }
+.custom-icon .marker-type-saas .site-icon { ... }
+.custom-icon .marker-type-sales .site-icon { ... }
+*/
+
+/* Styles for the temperature legend */
+.weather-legend {
+    padding: 6px 8px;
+    font: 14px/16px Arial, Helvetica, sans-serif;
+    background: white;
+    background: rgba(255,255,255,0.8);
+    box-shadow: 0 0 15px rgba(0,0,0,0.2);
+    border-radius: 5px;
+    line-height: 18px;
+    color: #555;
+}
+.weather-legend h4 {
+    margin: 0 0 5px;
+    color: #777;
+    text-align: center;
+}
+.weather-legend span {
+    display: block;
+    text-align: center;
+    font-size: 12px;
+}
+
+/* Remove old style comment */
 /*
 .custom-icon div {
   background-color: rgba(255, 255, 240, 0.8);

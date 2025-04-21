@@ -25,10 +25,35 @@
   <script>
     const map = L.map('map').setView([37.8, -96], 4.5);
 
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    // Removed the initial L.tileLayer here to avoid conflicts
+
+    const openStreetMap = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
       maxZoom: 19
-    }).addTo(map);
+    });
+
+    const OPENWEATHER_API_KEY = "124eb090e88356c238f27b5aa0855d13"; // Existing API key
+
+    const temperatureLayer = L.tileLayer(`https://tile.openweathermap.org/map/temp_new/{z}/{x}/{y}.png?appid=${OPENWEATHER_API_KEY}`, {
+      attribution: '&copy; <a href="https://openweathermap.org/">OpenWeatherMap</a>',
+      maxZoom: 19,
+      opacity: 0.6 // Adjust opacity as needed
+    });
+
+    // Set the default view with OpenStreetMap
+    openStreetMap.addTo(map);
+
+    // Layer control
+    const baseMaps = {
+        "OpenStreetMap": openStreetMap
+    };
+
+    const overlayMaps = {
+        "Temperature": temperatureLayer
+    };
+
+    L.control.layers(baseMaps, overlayMaps).addTo(map);
+
 
     const icons = {
       beef: L.icon({
@@ -97,15 +122,13 @@
       { name: 'Sales', coords: [41.8755616, -87.6244212], type: 'sales'} // Dan chicago, il
       ];
 
-    const OPENWEATHER_API_KEY = "124eb090e88356c238f27b5aa0855d13"; // Replace with your OpenWeather API key
-
+    // Re-added fetchWeather function
     async function fetchWeather(location) {
-      // Using OpenWeatherMap One Call API 3.0 (requires subscription, using free 2.5 for now)
-      // Note: Free tier might not provide daily min/max reliably for all locations or future dates.
-      // Using 5 day / 3 hour forecast endpoint as a fallback for daily min/max
+      // Using OpenWeatherMap 5 day / 3 hour forecast endpoint as a fallback for daily min/max
       const lat = location.coords[0];
       const lon = location.coords[1];
-      const response = await fetch(`https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${OPENWEATHER_API_KEY}&units=imperial`); // units=imperial for Fahrenheit
+      // Using units=imperial for Fahrenheit
+      const response = await fetch(`https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${OPENWEATHER_API_KEY}&units=imperial`);
       const data = await response.json();
 
       if (data && data.list && data.list.length > 0) {
@@ -118,37 +141,44 @@
         data.list.forEach(item => {
           const itemTime = item.dt * 1000;
           if (itemTime >= now && itemTime <= twentyFourHoursLater) {
-            if (item.main.temp_min < minTemp) {
-              minTemp = item.main.temp_min;
+            // OpenWeather 2.5 forecast provides temp directly, not temp_min/temp_max in the main object for each step
+            // We'll use the 'temp' value to find the min/max over the period
+            if (item.main.temp < minTemp) {
+              minTemp = item.main.temp;
             }
-            if (item.main.temp_max > maxTemp) {
-              maxTemp = item.main.temp_max;
+            if (item.main.temp > maxTemp) {
+              maxTemp = item.main.temp;
             }
           }
         });
 
-        // If we couldn't find temps in the next 24h, use the first available forecast
+        // If we couldn't find temps in the next 24h, use the first available forecast temp
         if (minTemp === Infinity || maxTemp === -Infinity) {
-            minTemp = data.list[0].main.temp_min;
-            maxTemp = data.list[0].main.temp_max;
+            minTemp = data.list[0].main.temp;
+            maxTemp = data.list[0].main.temp; // Use same temp if only one value found
         }
+         // Fallback if still infinity (e.g., API error or unexpected data)
+        if (minTemp === Infinity) minTemp = data.list[0].main.temp;
+        if (maxTemp === -Infinity) maxTemp = data.list[0].main.temp;
+
 
         return {
-          low: Math.round(minTemp), // Daily low
-          high: Math.round(maxTemp) // Daily high
+          low: Math.round(minTemp), // Daily low approximation
+          high: Math.round(maxTemp) // Daily high approximation
         };
       } else {
         console.error(`Failed to fetch weather for ${location.name}:`, data);
-        return null;
+        return null; // Return null if fetch fails
       }
     }
+
 
     async function addMarkers() {
       for (const location of locations) {
         const weather = await fetchWeather(location);
         const weatherLabel = weather
           ? `L ${weather.low}° / H ${weather.high}°`
-          : `L -- / H --`;
+          : `L -- / H --`; // Display placeholders if fetch fails
 
         const customIcon = L.divIcon({
           className: 'custom-icon', // Keep the main class for potential existing styles
@@ -159,8 +189,9 @@
               <div class="temperature-info">${weatherLabel}</div>
             </div>
           `,
-          iconSize: [80, 80],  // Increased size to accommodate text
-          iconAnchor: [40, 40]  // Centered anchor point
+          // Adjust iconSize and iconAnchor to accommodate text again
+          iconSize: [80, 80],  // Increased height
+          iconAnchor: [40, 70]  // Adjusted anchor
         });
 
         L.marker(location.coords, { icon: customIcon }).addTo(map);
@@ -168,6 +199,23 @@
     }
 
     addMarkers();
+
+    // Optional: Add a basic temperature legend (OpenWeather layer has its own scale, but this can be a placeholder)
+    const legend = L.control({position: 'bottomright'});
+
+    legend.onAdd = function (map) {
+        const div = L.DomUtil.create('div', 'info legend weather-legend');
+        div.innerHTML += '<h4>Temperature (°F)</h4>'; // Example legend
+        // Add color scale info here if desired, e.g., based on OpenWeather's scale
+        // div.innerHTML += '<i style="background: #ff0000"></i> Hot<br>';
+        // div.innerHTML += '<i style="background: #0000ff"></i> Cold<br>';
+        // For now, keeping it simple as OpenWeather layer shows colors
+        div.innerHTML += '<span>Layer shows temperature variation</span>';
+        return div;
+    };
+
+    legend.addTo(map);
+
   </script>
 </body>
 </html>
