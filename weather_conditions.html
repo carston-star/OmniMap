@@ -10,6 +10,50 @@
   <link rel="stylesheet" href="style.css" />
   <link rel="stylesheet" href="style_weather_conditions.css" />
   <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+  <style>
+    .temperature-info {
+      padding: 2px 6px;
+      border-radius: 6px;
+      color: #222;
+      font-weight: bold;
+      display: inline-block;
+      min-width: 70px;
+      text-align: center;
+      margin-top: 2px;
+      margin-bottom: 2px;
+      border: 1px solid #bbb;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.07);
+      background: #cccccc; /* fallback */
+    }
+    .legend-temp-color {
+      display: inline-block;
+      width: 18px;
+      height: 18px;
+      border-radius: 4px;
+      margin-right: 4px;
+      border: 1px solid #bbb;
+      vertical-align: middle;
+    }
+    .weather-legend {
+      background: rgba(255,255,255,0.95);
+      padding: 8px 12px 8px 10px;
+      border-radius: 8px;
+      font-size: 13px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      line-height: 1.5;
+      min-width: unset;
+      max-width: 98vw;
+      flex-wrap: wrap;
+    }
+    .legend-label {
+      margin-right: 10px;
+      white-space: nowrap;
+      font-size: 13px;
+    }
+  </style>
 </head>
 <body>
   <header>
@@ -180,6 +224,30 @@
     let showRemoteMarkers = false; // Default OFF
     const remoteMarkers = [];
 
+    // Utility: Get color for temperature
+    function getTempColor(temp) {
+      if (typeof temp !== 'number' || isNaN(temp)) return '#cccccc'; // default gray
+      if (temp <= 49) return '#b3e0ff';      // light blue
+      if (temp <= 65) return '#fff9b3';      // light yellow
+      if (temp <= 90) return '#ffd9b3';      // light orange
+      return '#ffb3b3';                      // light red
+    }
+
+    // Utility: Get gradient CSS for L/H
+    function getTempGradient(low, high) {
+      if (typeof low === 'number' && typeof high === 'number' && low !== high) {
+        const colorLow = getTempColor(low);
+        const colorHigh = getTempColor(high);
+        return `linear-gradient(to right, ${colorLow} 0%, ${colorHigh} 100%)`;
+      } else if (typeof low === 'number') {
+        return getTempColor(low);
+      } else if (typeof high === 'number') {
+        return getTempColor(high);
+      } else {
+        return '#cccccc';
+      }
+    }
+
     async function addMarkers() {
       for (const location of locations) {
         const weather = await fetchWeather(location);
@@ -187,13 +255,18 @@
           ? `L ${weather.low}° / H ${weather.high}°`
           : `L -- / H --`;
 
+        // Use gradient if both L and H, else fallback to solid
+        const tempBg = weather
+          ? getTempGradient(weather.low, weather.high)
+          : '#cccccc';
+
         const customIcon = L.divIcon({
           className: 'custom-icon',
           html: `
             <div class="marker-container marker-type-${location.type}">
               <div class="site-name">${location.name}</div>
               <img src='${icons[location.type].options.iconUrl}' class="site-icon" />
-              <div class="temperature-info">${weatherLabel}</div>
+              <div class="temperature-info" style="background: ${tempBg};">${weatherLabel}</div>
             </div>
           `,
           iconSize: [80, 80],
@@ -252,17 +325,23 @@
       await addMarkers();
       hideRemoteMarkers();
 
-      // Optional: Add a basic temperature legend (OpenWeather layer has its own scale, but this can be a placeholder)
-      const legend = L.control({position: 'bottomright'});
-
+      // Temperature color legend (bottom left)
+      const legend = L.control({position: 'bottomleft'});
       legend.onAdd = function (map) {
-          const div = L.DomUtil.create('div', 'info legend weather-legend');
-          div.innerHTML += '<h4>Temperature (°F)</h4>'; // Example legend
-          div.innerHTML += '<span>Layer shows temperature variation</span>';
-          return div;
+        const div = L.DomUtil.create('div', 'info legend weather-legend');
+        div.innerHTML = `
+          <span class="legend-label"><span class="legend-temp-color" style="background:#b3e0ff"></span>≤49°</span>
+          <span class="legend-label"><span class="legend-temp-color" style="background:#fff9b3"></span>50–65°</span>
+          <span class="legend-label"><span class="legend-temp-color" style="background:#ffd9b3"></span>66–90°</span>
+          <span class="legend-label"><span class="legend-temp-color" style="background:#ffb3b3"></span>91°+</span>
+          <span class="legend-label"><span class="legend-temp-color" style="background:#cccccc"></span>No Data</span>
+          <span class="legend-label" style="font-size:12px;margin-left:8px;">Bar: Low → High</span>
+        `;
+        return div;
       };
-
       legend.addTo(map);
+
+      // ...existing legend for OpenWeather layer (if needed)...
     })();
 
   </script>
