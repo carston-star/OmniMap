@@ -21,6 +21,9 @@
       </ul>
     </nav>
   </header>
+  <div class="toggle-container" style="position: absolute; top: 20%; right: 20px; z-index: 1000;">
+  <button id="toggle-remote" class="toggle-remote-button" data-default-text="Show Remote" data-active-text="Hide Remote">Show Remote Locations</button>
+</div>
   <div id="map" style="height: calc(100vh - 100px);"></div>
   <script>
     const map = L.map('map').setView([37.8, -96], 4.5);
@@ -173,15 +176,19 @@
     }
 
 
+    // --- Remote marker toggle logic ---
+    let showRemoteMarkers = false; // Default OFF
+    const remoteMarkers = [];
+
     async function addMarkers() {
       for (const location of locations) {
         const weather = await fetchWeather(location);
         const weatherLabel = weather
           ? `L ${weather.low}° / H ${weather.high}°`
-          : `L -- / H --`; // Display placeholders if fetch fails
+          : `L -- / H --`;
 
         const customIcon = L.divIcon({
-          className: 'custom-icon', // Keep the main class for potential existing styles
+          className: 'custom-icon',
           html: `
             <div class="marker-container marker-type-${location.type}">
               <div class="site-name">${location.name}</div>
@@ -189,32 +196,74 @@
               <div class="temperature-info">${weatherLabel}</div>
             </div>
           `,
-          // Adjust iconSize and iconAnchor to accommodate text again
-          iconSize: [80, 80],  // Increased height
-          iconAnchor: [40, 70]  // Adjusted anchor
+          iconSize: [80, 80],
+          iconAnchor: [40, 70]
         });
 
-        L.marker(location.coords, { icon: customIcon }).addTo(map);
+        // Identify remote markers (type 'sales' or name 'CIM')
+        const isRemote = location.type === 'sales' || location.name === 'CIM';
+
+        const marker = L.marker(location.coords, { icon: customIcon });
+
+        // Add to map only if not remote, or if remote and showRemoteMarkers is true
+        if (!isRemote || showRemoteMarkers) {
+          marker.addTo(map);
+        }
+        // Save remote markers for toggling
+        if (isRemote) {
+          remoteMarkers.push(marker);
+        }
       }
     }
 
-    addMarkers();
+    // Remove all remote markers from map
+    function hideRemoteMarkers() {
+      remoteMarkers.forEach(marker => {
+        map.removeLayer(marker);
+      });
+    }
 
-    // Optional: Add a basic temperature legend (OpenWeather layer has its own scale, but this can be a placeholder)
-    const legend = L.control({position: 'bottomright'});
+    // Add all remote markers to map
+    function showAllRemoteMarkers() {
+      remoteMarkers.forEach(marker => {
+        marker.addTo(map);
+      });
+    }
 
-    legend.onAdd = function (map) {
-        const div = L.DomUtil.create('div', 'info legend weather-legend');
-        div.innerHTML += '<h4>Temperature (°F)</h4>'; // Example legend
-        // Add color scale info here if desired, e.g., based on OpenWeather's scale
-        // div.innerHTML += '<i style="background: #ff0000"></i> Hot<br>';
-        // div.innerHTML += '<i style="background: #0000ff"></i> Cold<br>';
-        // For now, keeping it simple as OpenWeather layer shows colors
-        div.innerHTML += '<span>Layer shows temperature variation</span>';
-        return div;
-    };
+    // Toggle button logic
+    const toggleRemoteButton = document.getElementById('toggle-remote');
+    if (toggleRemoteButton) {
+      toggleRemoteButton.addEventListener('click', function() {
+        showRemoteMarkers = !showRemoteMarkers;
+        if (showRemoteMarkers) {
+          showAllRemoteMarkers();
+          toggleRemoteButton.textContent = toggleRemoteButton.dataset.activeText;
+        } else {
+          hideRemoteMarkers();
+          toggleRemoteButton.textContent = toggleRemoteButton.dataset.defaultText;
+        }
+      });
+      // Set initial state to OFF
+      toggleRemoteButton.textContent = toggleRemoteButton.dataset.defaultText;
+    }
 
-    legend.addTo(map);
+    // Wrap marker loading and legend in an async IIFE
+    (async function() {
+      await addMarkers();
+      hideRemoteMarkers();
+
+      // Optional: Add a basic temperature legend (OpenWeather layer has its own scale, but this can be a placeholder)
+      const legend = L.control({position: 'bottomright'});
+
+      legend.onAdd = function (map) {
+          const div = L.DomUtil.create('div', 'info legend weather-legend');
+          div.innerHTML += '<h4>Temperature (°F)</h4>'; // Example legend
+          div.innerHTML += '<span>Layer shows temperature variation</span>';
+          return div;
+      };
+
+      legend.addTo(map);
+    })();
 
   </script>
 </body>
