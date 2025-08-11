@@ -1,0 +1,24 @@
+let updateInterval = 60000; // Default: 1 minute
+
+// Optionally fetch from API
+fetch('/api/location-update-interval')
+  .then(res => res.json())
+  .then(data => {
+    if (data && data.intervalMs) updateInterval = data.intervalMs;
+  });
+
+let intervalId = null;
+
+function startSharing() {
+  // ...existing code...
+  intervalId = setInterval(() => {
+    navigator.geolocation.getCurrentPosition(pos => {
+      // send location to server
+    });
+  }, updateInterval);
+}
+
+function stopSharing() {
+  if (intervalId) clearInterval(intervalId);
+  // ...existing code...
+}

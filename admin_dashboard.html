@@ -1,0 +1,17 @@
+<label>Location Update Interval:
+  <select id="interval-select">
+    <option value="60000">1 min</option>
+    <option value="300000">5 min</option>
+    <option value="600000">10 min</option>
+    <option value="1800000">30 min</option>
+  </select>
+</label>
+<script>
+  document.getElementById('interval-select').addEventListener('change', function() {
+    fetch('/api/location-update-interval', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ intervalMs: Number(this.value) })
+    });
+  });
+</script>

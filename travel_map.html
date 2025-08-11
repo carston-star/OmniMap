@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Travel Map</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+  <style>
+    #map { height: 90vh; width: 100vw; }
+    body { margin: 0; }
+    header { background: #222; color: #fff; padding: 1em 0; text-align: center; }
+    nav ul { list-style: none; display: flex; justify-content: center; padding: 0; margin: 0; }
+    nav li { margin: 0 15px; }
+    nav a { text-decoration: none; color: white; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Travel Map</h1>
+    <nav>
+      <ul>
+        <li><a href="index2.html">Home</a></li>
+        <li><a href="weather_conditions.html">Weather</a></li>
+        <li><a href="travel_map.html">Travel</a></li>
+        <li><a href="admin_dashboard.html" id="admin-link" style="display:none;">Admin</a></li>
+      </ul>
+    </nav>
+  </header>
+  <div id="map"></div>
+  <script>
+    // Show Admin link if user is admin (replace with your real logic)
+    const isAdmin = false; // TODO: Replace with real check
+    if (isAdmin) document.getElementById('admin-link').style.display = 'inline';
+
+    // Initialize map
+    const map = L.map('map').setView([39.5, -98.35], 4); // Centered on US
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; OpenStreetMap contributors'
+    }).addTo(map);
+
+    // Fetch and display employee locations
+    async function loadEmployeeLocations() {
+      const res = await fetch('/api/employee-location');
+      const locations = await res.json();
+      // Remove old markers
+      if (window.employeeMarkers) {
+        window.employeeMarkers.forEach(m => map.removeLayer(m));
+      }
+      window.employeeMarkers = [];
+      for (const [employeeId, loc] of Object.entries(locations)) {
+        const marker = L.marker([loc.lat, loc.lng]).addTo(map)
+          .bindPopup(`<b>${employeeId}</b><br>Last update: ${new Date(loc.timestamp).toLocaleString()}`);
+        window.employeeMarkers.push(marker);
+      }
+    }
+
+    // Initial load and periodic refresh
+    loadEmployeeLocations();
+    setInterval(loadEmployeeLocations, 60000); // 1 min, or fetch from API for dynamic interval
+  </script>
+</body>
+</html>
