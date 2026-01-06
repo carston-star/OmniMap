@@ -14,7 +14,7 @@ body, button, .legend, .toggle-button, .toggle-road-button, .toggle-hq-button {
 
 #map {
   flex: 1;
-  height: calc(100vh - 100px); /* Adjust height to account for header and footer */
+  height: calc(100vh - 80px); /* Adjusted for narrower header */
   margin-bottom: 0; /* Remove margin to ensure full height */
 }
 
@@ -56,7 +56,7 @@ body, button, .legend, .toggle-button, .toggle-road-button, .toggle-hq-button {
 /* New styles for header and footer */
 header {
   text-align: center;
-  padding: 20px;
+  padding: 8px 12px; /* Narrower header */
   background-color: #8B0000; /* Deep red background */
   color: white; /* White text color */
   border-bottom: 2px solid #000; /* Black border */
@@ -66,7 +66,8 @@ header {
 
 header h1 {
   margin: 0;
-  font-size: 2em;
+  font-size: 1.4em; /* Smaller title */
+  line-height: 1.1;
 }
 
 footer {

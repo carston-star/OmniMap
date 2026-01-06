@@ -10,8 +10,9 @@
   <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
   <style>
     .site-label { background: transparent; padding: 0; border: none; box-shadow: none; }
-    .site-label .marker-container { display: flex; align-items: center; background: rgba(255,255,255,0.95); padding: 4px 8px; border-radius: 6px; box-shadow: 0 1px 3px rgba(0,0,0,0.08); font-size: 13px; width: auto; white-space: nowrap; }
+    .site-label .marker-container { display: flex; align-items: center; gap:8px; background: rgba(255,255,255,0.95); padding: 4px 8px; border-radius: 6px; box-shadow: 0 1px 3px rgba(0,0,0,0.08); font-size: 13px; width: auto; white-space: nowrap; }
     .site-label .site-name { font-weight: 600; }
+    .site-label .site-icon { width: 16px; height: 16px; object-fit: contain; display: inline-block; }
   </style>
 </head>
 <body>
@@ -33,6 +34,7 @@
     <button class="toggle-straight-line-button" data-default-text="Show Straight Line Distances" data-active-text="Hide Straight Line Distances">Show Straight Line Distances</button>
     <button class="toggle-driving-distance-button" data-default-text="Show Driving Distance" data-active-text="Hide Driving Distance">Show Driving Distance</button>
     <button class="toggle-machine-status-button" data-default-text="Show Machine Status" data-active-text="Hide Machine Status">Show Machine Status</button>
+    <button class="toggle-remote-button" data-default-text="Show Remote Locations" data-active-text="Hide Remote Locations">Show Remote Locations</button>
     <div class="sub-toggle-container">
       <button class="toggle-usa-mexico-button" data-default-text="Show USA to Mexico Distances" data-active-text="Hide USA to Mexico Distances">Show USA to Mexico Distances</button>
       <button class="toggle-hq-saas-button" data-default-text="Show HQ and SaaS Centers" data-active-text="Hide HQ and SaaS Centers">Show HQ and SaaS Centers</button>
