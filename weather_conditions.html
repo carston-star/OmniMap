@@ -264,17 +264,13 @@
           ? getTempGradient(weather.low, weather.high)
           : '#cccccc';
 
+        // Home page style: icon and name on one line, temp box to the right, same background, border, and shadow
         const customIcon = L.divIcon({
-          className: 'custom-icon',
+          className: 'site-label',
           html: `
-            <div class="marker-container marker-type-${location.type}">
-              <div class="site-name">${location.name}</div>
-              <img src='${icons[location.type].options.iconUrl}' class="site-icon" />
-              <div class="temperature-info" style="background: ${tempBg};">${weatherLabel}</div>
-            </div>
-          `,
-          iconSize: [80, 80],
-          iconAnchor: [40, 70]
+            <div class=\"marker-container\" style=\"display:flex;align-items:center;gap:8px;background:rgba(255,255,255,0.95);padding:4px 8px;border-radius:6px;box-shadow:0 1px 3px rgba(0,0,0,0.08);font-size:13px;width:auto;white-space:nowrap;border: none;\">\n              <img src='${icons[location.type].options.iconUrl}' class=\"site-icon\" style=\"width:16px;height:16px;object-fit:contain;display:inline-block;\" />\n              <span class=\"site-name\" style=\"font-weight:600;\">${location.name}</span>\n              <span class=\"temperature-info\" style=\"background:${tempBg};margin-left:8px;padding:2px 6px;border-radius:6px;color:#222;font-weight:bold;display:inline-block;min-width:70px;text-align:center;border:1px solid #bbb;box-shadow:0 1px 2px rgba(0,0,0,0.07);\">${weatherLabel}</span>\n            </div>\n          `,
+          iconSize: null,
+          iconAnchor: [16, 12]
         });
 
         // Identify remote markers (type 'sales' or name 'CIM')
