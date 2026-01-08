@@ -50,7 +50,7 @@ body, button, .legend, .toggle-button, .toggle-road-button, .toggle-hq-button {
 .leaflet-control .toggle-button button.active,
 .leaflet-control .toggle-road-button button.active,
 .leaflet-control .toggle-hq-button button.active {
-  background-color: #32CD32; /* Pleasant green color */
+  background-color: #8B9096; /* Softer muted gray for 'off' state */
 }
 
 /* New styles for header and footer */
@@ -180,7 +180,7 @@ footer p {
 }
 
 .toggle-container button.active {
-  background-color: #32CD32; /* Green color for active button */
+  background-color: #8B9096; /* Softer muted gray for active (turn-off) */
 }
 
 /* Styles for the sub-toggle button */
@@ -204,7 +204,7 @@ footer p {
 }
 
 .sub-toggle-container button.active {
-  background-color: #32CD32; /* Green color for active button */
+  background-color: #8B9096; /* Softer muted gray for active (turn-off) */
 }
 
 /* Styles for the machine status radio buttons */
@@ -348,7 +348,7 @@ footer p {
 }
 
 .toggle-weather-button.active {
-  background-color: #32CD32; /* Green color for active button */
+  background-color: #8B9096; /* Softer muted gray for active (turn-off) */
 }
 
 .temperature-label {
