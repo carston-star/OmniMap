@@ -437,3 +437,33 @@ footer p {
 .weather-icon.sales {
   background-image: url('Images/sales.png'); /* icon for sales */
 }
+
+/* Highlight the active page link */
+nav ul li a.active {
+  font-weight: bold;
+  color: white;
+  background: none;
+  padding: 0;
+  border-radius: 0;
+  text-decoration: none;
+}
+
+nav ul li a {
+  text-decoration: none;
+  color: white;
+}
+
+nav ul li a:visited {
+  color: white;
+}
+
+nav ul li a:hover {
+  text-decoration: underline;
+  color: #ffcc00;
+}
+
+nav ul li a.active:hover {
+  color: white;
+  text-decoration: none;
+  cursor: default;
+}

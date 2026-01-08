@@ -53,6 +53,11 @@
       white-space: nowrap;
       font-size: 13px;
     }
+    /* New CSS for active link */
+    nav ul li a.active {
+      font-weight: bold;
+      color: #ffcc00; /* Highlight color for active link */
+    }
   </style>
 </head>
 <body>
@@ -60,8 +65,8 @@
     <h1>Weather Conditions</h1>
     <nav>
       <ul style="list-style: none; display: flex; justify-content: center; padding: 0; margin: 0;">
-        <li style="margin: 0 15px;"><a href="index2.html" style="text-decoration: none; color: white;">Home</a></li>
-        <li style="margin: 0 15px;"><a href="weather_conditions.html" style="text-decoration: none; color: white;">Weather</a></li>
+        <li style="margin: 0 15px;"><a href="index2.html">Home</a></li>
+        <li style="margin: 0 15px;"><a href="weather_conditions.html">Weather</a></li>
       </ul>
     </nav>
   </header>
@@ -344,6 +349,19 @@
       // ...existing legend for OpenWeather layer (if needed)...
     })();
 
+    // Highlight the active page link
+    document.addEventListener("DOMContentLoaded", () => {
+      const currentPage = window.location.pathname.split("/").pop(); // Get the current file name
+      const navLinks = document.querySelectorAll("nav ul li a");
+
+      navLinks.forEach(link => {
+        if (link.getAttribute("href") === currentPage) {
+          link.classList.add("active"); // Add the active class to the current page link
+          link.removeAttribute("href"); // Remove href to disable link on current page
+          link.style.cursor = "default"; // Change cursor to default
+        }
+      });
+    });
   </script>
 </body>
 </html>
