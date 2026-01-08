@@ -14,6 +14,8 @@ Recent updates (summary):
 - Label anchor improved so the small icon inside the label sits roughly over the true coordinate (adjustable in `script2.js`).
 - Remote/site toggles remain: remote associates (sales/CIM) are controlled by the `Show Remote Locations` toggle.
 - Legend positioning lowered slightly to avoid footer overlap.
+- Improved navigation: The current page link in the navigation bar is now bold and white, and is no longer clickable. Other links turn gold and underline on hover for better visibility and usability.
+- Accessibility: Users can no longer click the link for the page they are currently on, reducing confusion and improving navigation clarity.
 
 ## Files of interest
 
