@@ -90,7 +90,7 @@ footer p {
 /* Styles for the legend */
 .legend {
   position: absolute;
-  bottom: 80px; /* Move the legend up */
+  bottom: 60px; /* Lowered a bit to account for reduced footer height */
   left: 10px;
   background-color: white;
   padding: 10px;
