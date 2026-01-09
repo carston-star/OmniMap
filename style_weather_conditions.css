@@ -79,7 +79,7 @@ header nav ul li a:visited {
 /* Hover styles for nav links */
 header nav ul li a:hover {
   text-decoration: underline;
-  color: #ffcc00;
+  color: #d3d3d3;
 }
 
 /* Enhanced styles for the active page link */

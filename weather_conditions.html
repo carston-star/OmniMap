@@ -30,9 +30,9 @@
       width: 18px;
       height: 18px;
       border-radius: 4px;
-      margin-right: 4px;
       border: 1px solid #bbb;
       vertical-align: middle;
+      flex-shrink: 0;
     }
     .weather-legend {
       background: rgba(255,255,255,0.95);
@@ -41,17 +41,20 @@
       font-size: 13px;
       box-shadow: 0 2px 8px rgba(0,0,0,0.08);
       display: flex;
-      align-items: center;
-      gap: 10px;
+      flex-direction: column;
+      gap: 8px;
       line-height: 1.5;
       min-width: unset;
-      max-width: 98vw;
-      flex-wrap: wrap;
+      align-items: flex-start;
     }
     .legend-label {
-      margin-right: 10px;
-      white-space: nowrap;
+      margin-right: 0;
       font-size: 13px;
+      display: inline-flex !important;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: nowrap;
+      width: 100%;
     }
     /* New CSS for active link */
     nav ul li a.active {
@@ -340,7 +343,7 @@
           <span class="legend-label"><span class="legend-temp-color" style="background:#ffd9b3"></span>66–90°</span>
           <span class="legend-label"><span class="legend-temp-color" style="background:#ffb3b3"></span>91°+</span>
           <span class="legend-label"><span class="legend-temp-color" style="background:#cccccc"></span>No Data</span>
-          <span class="legend-label" style="font-size:12px;margin-left:8px;">Bar: Low → High</span>
+          <span class="legend-label" style="font-size:12px;margin-top:4px;border-top:1px solid #ddd;padding-top:4px;">Low → High</span>
         `;
         return div;
       };
