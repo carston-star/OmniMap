@@ -8,13 +8,15 @@ This is a web-based mapping tool for visualizing Omnisharp KSM plant locations, 
 
 Recent updates (summary):
 
+- **Security Enhancement (Jan 9, 2026):** API keys are now stored in `.env` file instead of hardcoded in source files. Created `.gitignore` to protect sensitive data and cleaned git history to remove previously exposed API keys.
+- **UI Improvements (Jan 9, 2026):** Changed hyperlink hover color from gold to light gray for better visual consistency. Reorganized Weather page legend from 2-column to single-column layout (ordered cold to hot) with temperatures displayed to the right of color boxes.
 - Plant/site labels are now the primary map markers: each marker is a styled text-box containing a small icon plus the plant name instead of separate image-only icons.
 - Labels are interactive (hover/click show detailed popups) and are controlled by the `Show Plant Information` toggle, which is ON by default on load.
 - Overlap handling: when labels overlap at low zoom, the algorithm keeps one label at its true geographic location (closest to the cluster centroid) and vertically offsets nearby labels above/below in alternating order for visibility.
 - Label anchor improved so the small icon inside the label sits roughly over the true coordinate (adjustable in `script2.js`).
 - Remote/site toggles remain: remote associates (sales/CIM) are controlled by the `Show Remote Locations` toggle.
 - Legend positioning lowered slightly to avoid footer overlap.
-- Improved navigation: The current page link in the navigation bar is now bold and white, and is no longer clickable. Other links turn gold and underline on hover for better visibility and usability.
+- Improved navigation: The current page link in the navigation bar is now bold and white, and is no longer clickable. Other links turn light gray and underline on hover for better visibility and usability.
 - Accessibility: Users can no longer click the link for the page they are currently on, reducing confusion and improving navigation clarity.
 
 ## Files of interest
@@ -68,20 +70,52 @@ Place these files in the project root directory. They are protected by `.gitigno
 ## Security Notes
 
 **Protected Files (NOT in repository):**
-- `config.js` - Contains API keys
+- `.env` - Contains API keys and sensitive configuration (essential for development)
+- `config.js` - Legacy config file (if present) - contains API keys
 - `*.xlsx`, `*.csv` - Database files with sensitive information
 - `data.json` - User location data
+- `node_modules/` - Node dependencies
 
 These files are essential for the application but contain sensitive information and are excluded from version control via `.gitignore`.
 
+**Git History Cleaned:**
+- All previously exposed API keys have been removed from git history via `git filter-branch`
+- Developers cloning this repo will not have access to historical API keys
+- Ensure you rotate any API keys that were exposed before January 9, 2026
+
 ## Configuration & API Keys
 
-- API keys are loaded from `config.js` (see Setup Instructions above)
-- `config.example.js` provides a template for required keys
-- Keys used by the application:
-  - `WEATHERSTACK_API_KEY` - Weather data
-  - `MAPBOX_API_KEY` - Driving routes and maps
-  - `AVIATIONSTACK_API_KEY` - Flight information
+API keys are now securely stored in a `.env` file (not included in the repository) instead of being hardcoded in the source code.
+
+### Setup API Keys
+
+1. Create a `.env` file in the project root (if not already present):
+   ```
+   API_KEY=YOUR_API_KEY_HERE
+   ADMIN_API_KEY=YOUR_ADMIN_API_KEY_HERE
+   MAPBOX_API_KEY=your_mapbox_key_here
+   AVIATIONSTACK_API_KEY=your_aviationstack_key_here
+   WEATHERSTACK_API_KEY=your_weatherstack_key_here
+   ```
+
+2. Update the placeholder values with your actual API keys:
+   - **Mapbox API** - Get your key at [https://www.mapbox.com/](https://www.mapbox.com/)
+   - **Aviationstack API** - Get your key at [https://aviationstack.com/](https://aviationstack.com/)
+   - **Weatherstack API** - Get your key at [https://weatherstack.com/](https://weatherstack.com/)
+
+3. **IMPORTANT:** The `.env` file is protected by `.gitignore` and will NOT be committed to version control.
+
+### Using API Keys in Code
+
+The application loads API keys from environment variables. For Node.js environments, use:
+```javascript
+const apiKey = process.env.MAPBOX_API_KEY;
+```
+
+For frontend/browser environments with react-native-dotenv:
+```javascript
+import { API_KEY } from '@env';
+```
 
 ## How the label/cluster behavior works (for developers)
 
