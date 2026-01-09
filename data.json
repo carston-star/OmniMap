@@ -10,5 +10,5 @@
       "teamId": "team-1"
     }
   },
-  "apiKey": "dev-key"
+  // "apiKey": "dev-key" // moved to .env
 }

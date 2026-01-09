@@ -3,9 +3,10 @@ import { StyleSheet, Text, View, TextInput, Button, Platform } from 'react-nativ
 import * as Location from 'expo-location';
 import * as TaskManager from 'expo-task-manager';
 import axios from 'axios';
+import { API_KEY } from '@env';
 
 export default function App() {
-  const API_KEY = 'REPLACE_WITH_API_KEY';
+  // API_KEY is now loaded from .env using react-native-dotenv
   const BG_TASK_NAME = 'OMNIMAP_BACKGROUND_LOCATION_TASK';
 
   // Background task: will be invoked by the OS when location updates arrive.
