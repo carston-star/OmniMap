@@ -1,18 +1,32 @@
 # Ignore environment variable files
 .env
 .env.*
+
 # Ignore config files with secrets
 config.json
+config.js
+
+# Database files with sensitive data
+*.csv
+*.xlsx
+OmnisharpDatabase*.csv
+OmnisharpDatabase*.xlsx
+data.json
+
 # Node modules
 node_modules/
+
 # OS files
 .DS_Store
 Thumbs.db
+
 # Logs
 *.log
+
 # Ignore build outputs
 dist/
 build/
+
 # Ignore IDE/editor files
 .vscode/
 .idea/

@@ -24,7 +24,34 @@ Recent updates (summary):
 - `style.css` — global styling including legend and control layout; `.site-label` defines the label box look.
 - `OmnisharpDatabase01.xlsx` — optional Excel file with plant metadata used to populate popups (place in project root).
 
-## How to run (quick)
+## Setup Instructions
+
+### 1. Configure API Keys (Required)
+
+This project uses external APIs that require authentication keys. **API keys are NOT included in the repository for security.**
+
+1. Copy the example config file:
+   ```bash
+   cp config.example.js config.js
+   ```
+
+2. Edit `config.js` and add your API keys:
+   - **Weatherstack API** - Get your key at [https://weatherstack.com/](https://weatherstack.com/)
+   - **Mapbox API** - Get your key at [https://www.mapbox.com/](https://www.mapbox.com/)
+   - **Aviationstack API** - Get your key at [https://aviationstack.com/](https://aviationstack.com/)
+
+3. **IMPORTANT:** Never commit `config.js` to version control. It's already in `.gitignore`.
+
+### 2. Add Database Files (Required for full functionality)
+
+The application requires local database files that are not included in the repository:
+
+- `OmnisharpDatabase01.xlsx` - Plant metadata (SME info, contacts, etc.)
+- `data.json` - Location tracking data (optional)
+
+Place these files in the project root directory. They are protected by `.gitignore` and will not be committed.
+
+### 3. Run the Application
 
 1. Serve the project from a local web server (recommended) — many browsers block local file fetches (Excel) when opening `index2.html` directly.
 
@@ -36,17 +63,25 @@ Recent updates (summary):
    # then open http://localhost:8000/index2.html
    ```
 
-2. Ensure `OmnisharpDatabase01.xlsx` is in the same directory if you want Excel-driven popups.
-3. Open `index2.html` in your browser (prefer Chrome or Edge for best behavior).
+2. Open `index2.html` in your browser (prefer Chrome or Edge for best behavior).
 
-## Configuration & API keys
+## Security Notes
 
-- `script2.js` contains placeholder variables for API keys:
-  - `MAPBOX_API_KEY` — Mapbox (driving routes)
-  - `AVIATIONSTACK_API_KEY` — Aviationstack (flight data)
-  - Weather APIs may be present in other files (`weather_conditions.html`).
+**Protected Files (NOT in repository):**
+- `config.js` - Contains API keys
+- `*.xlsx`, `*.csv` - Database files with sensitive information
+- `data.json` - User location data
 
-Insert keys directly into `script2.js` or manage via a safer environment for production.
+These files are essential for the application but contain sensitive information and are excluded from version control via `.gitignore`.
+
+## Configuration & API Keys
+
+- API keys are loaded from `config.js` (see Setup Instructions above)
+- `config.example.js` provides a template for required keys
+- Keys used by the application:
+  - `WEATHERSTACK_API_KEY` - Weather data
+  - `MAPBOX_API_KEY` - Driving routes and maps
+  - `AVIATIONSTACK_API_KEY` - Flight information
 
 ## How the label/cluster behavior works (for developers)
 
