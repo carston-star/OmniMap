@@ -1,0 +1,14 @@
+{
+  "globalIntervalMs": 300000,
+  "userIntervals": {},
+  "teamIntervals": {},
+  "lastLocations": {
+    "alice": {
+      "lat": 36.1867,
+      "lng": -94.1288,
+      "timestamp": 1704758400000,
+      "teamId": "team-1"
+    }
+  },
+  "apiKey": "dev-key"
+}

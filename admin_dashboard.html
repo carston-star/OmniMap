@@ -9,9 +9,88 @@
 <script>
   document.getElementById('interval-select').addEventListener('change', function() {
     fetch('/api/location-update-interval', {
-      method: 'POST',
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ intervalMs: Number(this.value) })
+      });
+    });
+  });
+  </script>
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ intervalMs: Number(this.value) })
     });
+  });
+</script>
+
+<hr />
+<h3>Per-team / Per-user interval</h3>
+<label>Scope:
+  <select id="scope-select"><option value="team">Team</option><option value="user">User</option></select>
+</label>
+<input id="scope-id" placeholder="team or user id" style="margin-left:.5em;padding:.25em;" />
+<select id="scope-interval" style="margin-left:.5em;">
+  <option value="300000">5 min</option>
+  <option value="600000">10 min</option>
+  <option value="900000">15 min</option>
+  <option value="1800000">30 min</option>
+</select>
+<button id="set-scope">Set</button>
+<script>
+  document.getElementById('set-scope').addEventListener('click', function() {
+    const scope = document.getElementById('scope-select').value;
+    const id = document.getElementById('scope-id').value.trim();
+    const intervalMs = Number(document.getElementById('scope-interval').value);
+    if (!id) { alert('Enter the team or user id'); return; }
+      fetch('http://localhost:3000/api/settings', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ scope, id, intervalMs })
+    }).then(() => alert('Saved'))
+      .catch(e => alert('Failed'));
+  });
+</script>
+
+<hr />
+<h3>API Key & Backups</h3>
+<label>Current admin API key: <input id="admin-key" type="password" placeholder="enter current key" style="width:220px;padding:.25em;"/></label>
+<div style="margin-top:.5em;">
+  <button id="rotate-key">Rotate API Key</button>
+  <input id="new-key-display" placeholder="new key will appear here" style="width:320px;margin-left:.5em;padding:.25em;" readonly />
+</div>
+<div style="margin-top:.75em;">
+  <button id="backup-now">Create backup</button>
+  <span id="backup-status" style="margin-left:.5em;color:#333;"></span>
+</div>
+
+<script>
+  document.getElementById('rotate-key').addEventListener('click', async function() {
+    const current = document.getElementById('admin-key').value.trim();
+    if (!current) { alert('Enter current API key'); return; }
+    try {
+      const res = await fetch('/api/admin/api-key', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'x-api-key': current }
+      });
+      if (!res.ok) throw new Error('Failed');
+      const data = await res.json();
+      document.getElementById('new-key-display').value = data.apiKey;
+      alert('API key rotated. Store the new key securely.');
+    } catch (e) {
+      alert('Rotate failed: check your key and try again');
+    }
+  });
+
+  document.getElementById('backup-now').addEventListener('click', async function() {
+    const current = document.getElementById('admin-key').value.trim();
+    if (!current) { alert('Enter current API key'); return; }
+    document.getElementById('backup-status').textContent = 'Creating...';
+    try {
+      const res = await fetch('/api/admin/backup', { method: 'POST', headers: { 'x-api-key': current } });
+      if (!res.ok) throw new Error('Failed');
+      const data = await res.json();
+      document.getElementById('backup-status').textContent = `Saved: ${data.filename}`;
+    } catch (e) {
+      document.getElementById('backup-status').textContent = 'Backup failed';
+    }
   });
 </script>

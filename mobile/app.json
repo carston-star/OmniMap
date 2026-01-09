@@ -1,0 +1,12 @@
+{
+  "expo": {
+    "name": "OmniMapMobile",
+    "slug": "omnimap-mobile",
+    "platforms": ["ios", "android"],
+    "version": "1.0.0",
+    "sdkVersion": "48.0.0",
+    "orientation": "portrait",
+    "updates": { "fallbackToCacheTimeout": 0 },
+    "assetBundlePatterns": ["**/*"]
+  }
+}
