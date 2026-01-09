@@ -40,6 +40,9 @@
     const isAdmin = false; // TODO: Replace with real check
     if (isAdmin) document.getElementById('admin-link').style.display = 'inline';
 
+    // Local dev API base — change if your server runs elsewhere
+    const API_BASE = 'http://localhost:3000';
+
     // Initialize map
     const map = L.map('map').setView([39.5, -98.35], 4); // Centered on US
 
@@ -49,17 +52,21 @@
 
     // Fetch and display employee locations
     async function loadEmployeeLocations() {
-      const res = await fetch('/api/employee-location');
-      const locations = await res.json();
-      // Remove old markers
-      if (window.employeeMarkers) {
-        window.employeeMarkers.forEach(m => map.removeLayer(m));
-      }
-      window.employeeMarkers = [];
-      for (const [employeeId, loc] of Object.entries(locations)) {
-        const marker = L.marker([loc.lat, loc.lng]).addTo(map)
-          .bindPopup(`<b>${employeeId}</b><br>Last update: ${new Date(loc.timestamp).toLocaleString()}`);
-        window.employeeMarkers.push(marker);
+      try {
+        const res = await fetch(API_BASE + '/api/employee-location');
+        const locations = await res.json();
+        // Remove old markers
+        if (window.employeeMarkers) {
+          window.employeeMarkers.forEach(m => map.removeLayer(m));
+        }
+        window.employeeMarkers = [];
+        for (const [employeeId, loc] of Object.entries(locations)) {
+          const marker = L.marker([loc.lat, loc.lng]).addTo(map)
+            .bindPopup(`<b>${employeeId}</b><br>Last update: ${new Date(loc.timestamp).toLocaleString()}`);
+          window.employeeMarkers.push(marker);
+        }
+      } catch (e) {
+        console.warn('Failed to load employee locations', e);
       }
     }
 
@@ -69,15 +76,13 @@
 
     // --- Share my location toggle ---
     let shareIntervalId = null;
-      // Local dev API base — change if your server runs elsewhere
-      const API_BASE = 'http://localhost:3000';
     let myMarker = null;
 
-        const res = await fetch(API_BASE + '/api/employee-location');
+    async function postLocation(userId, teamId, lat, lng) {
       try {
-        await fetch('/api/location', {
+        await fetch(API_BASE + '/api/location', {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+          headers: { 'Content-Type': 'application/json', 'x-api-key': 'dev-key' },
           body: JSON.stringify({ userId, teamId, lat, lng, timestamp: Date.now() })
         });
       } catch (e) {
@@ -120,9 +125,9 @@
           const q = new URLSearchParams();
           if (userId) q.set('userId', userId);
           if (teamId) q.set('teamId', teamId);
-          const res = await fetch('/api/location-update-interval?' + q.toString());
+          const res = await fetch(API_BASE + '/api/location-update-interval?' + q.toString());
           const data = await res.json();
-            const res = await fetch(API_BASE + '/api/location-update-interval?' + q.toString());
+          intervalMs = data.intervalMs || 60000;
         } catch (e) {
           console.warn('Could not fetch interval, using default', e);
         }
