@@ -65,7 +65,18 @@
     <p>&copy; 2025 Omnisharp, LLC</p>
   </footer>
   <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-  <!-- Load config before main script -->
+  <!-- API Configuration - inline for public GitHub Pages access -->
+  <script>
+    const API_CONFIG = {
+      WEATHERSTACK_API_KEY: '9e17199811d6fda107005bc1c898c55e',
+      MAPBOX_API_KEY: 'pk.eyJ1IjoiY2J1ZWhsZXIwMSIsImEiOiJjbTY2bzQ1MW8wMjdlMmxwdzc3dDZlYnA4In0.a09bYff34MsNaLoJsJYb6A',
+      AVIATIONSTACK_API_KEY: '62b03a79042579fe5f64a5e45684a9cc'
+    };
+    if (typeof window !== 'undefined') {
+      window.API_CONFIG = API_CONFIG;
+    }
+  </script>
+  <!-- Load config.js as fallback for local development -->
   <script src="config.js"></script>
   <script src="script2.js"></script>
   <script>
